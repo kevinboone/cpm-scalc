@@ -1,0 +1,7 @@
+m80 ma.rel=main.asm
+m80 co.rel=conio.asm
+m80 db.rel=dbgutl.asm
+m80 im.rel=intmath.asm
+m80 st.rel=string.asm
+l80 ma,co,db,im,st,scalc/n/e
+

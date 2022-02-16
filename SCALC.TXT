@@ -1,0 +1,56 @@
+Simple calculator for CP/M
+==========================
+
+scalc is a simple programmer's calculator for CP/M (Z80). It's designed to fit
+into 16 disk blocks (about 2kB) and use no more memory than that.  It uses
+16-bit integer arithmetic, which behaves the same way (including overflows) as
+native Z80 16-bit arithmetic does.  
+
+Usage
+-----
+Although simple, scalc follows proper rules of precedence, and supports
+expressions with brackets. scalc calculates expressions directly from the
+command line, and displays results in (signed) decimal and hexadecimal.
+
+    A> scalc 2+8
+    10  #000A
+
+Alternatively, running scalc without an expression enters interactive mode, in
+which expressions can be entered line by line. To leave interactive mode, enter
+an empty line, or hit ctrl+c.
+
+Hexadecimal numbers can be entered if preceded with a hash ('#'). As well as
+the usual arithmetic operators, scalc supports bitwise logical operations.
+
+The range of numbers is -32,768 to 32,767. The program won't warn you if you
+enter a number that is too large to fit into that range, or perform
+calculations that overflow the range.
+
+Operators
+---------
++, -, *, / have their usual meanings. scalc also supports:
+
+|	bitwise OR
+&	bitwise AND
+^	bitwise exclusive OR
+%	modulus (remainder after division).
+
+The first three of these operators have the same precedence as +/-;
+% has the same precedence as division.
+
+Number symbols
+--------------
+Numbers are decimal unless indicated otherwise. A hexadecimal number is
+introduced by a # symbol, e.g., #FF00. To the extent that it is meaningful to
+do so, negative hexadecimal numbers can be used, like this: -#AABB. "#-AABB"
+won't work. 
+
+The special symbol @ substitutes the result of the last calculation.
+Naturally, this only makes sense in interactive mode. This symbol will
+otherwise by zero.
+
+Author
+------
+scalc is maintained by Kevin Boone, and is distributed under the terms of the
+GNU public licence, v3.0.
+

@@ -1,0 +1,26 @@
+scalc uses a modified recursive descend parser, defined by the following
+grammar.
+
+  EXPR ::= TERM {'+'|'-' TERM}...
+  TERM ::= FACTOR {'*'|'/' FACTOR}...  
+  FACTOR ::=
+	NUMBER |
+	'(' EXPR ')' |
+        '-' FACTOR
+
+The "modification" is that EXPR and TERM match variable length lists of
+symbols, because otherwise the recursion would be infinite.  This design choice
+leads to some rather ugly implementation details, but at least the grammar
+remains coherent. The alternative would be to transform the grammar into
+something that could be parsed by recursive descent, by introducing a bunch of
+intermediate rules. At least this grammar is recognizable. 
+
+Each element has a corresponding function in main.asm. So a TERM is handled by
+prs_term(). This routine, and all others of the same type, return 1 or 0 in the
+A register, to indicate that some tokens were, or were not, sucessfully parsed.
+
+The tokenizer delivers numbers to the parser pre-parsed; that is to say, there
+digits have already been consumed and converted to binary.  However, the
+tokenizer does not process negative numbers -- the parser has to do that.
+
+
