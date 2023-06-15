@@ -569,10 +569,29 @@ eval:
 	LD	C, A
 	ADD	HL, BC
 	LD	(HL), 0		; Zero-terminate the expression string
+
+; nasty bug fix -- it seems that sometimes the parser runs off the end
+;   of the expression. zero-terminating is supposed to indicate the
+;   end, but somehow the parser skips the zero and carries on. Since
+;   I don't have time to seek out the true problem right now, the 'fix'
+;   is to add some extra zeros to the end of the command line, so the
+;   parser finds a terminating zero, even if it skips the real one.
+; This is very nasty, and I should fix it properly when I have time.
+; I think it's safe to write these zeros, because nobody's going to
+;   enter a 128-character expression when there's no line editing.
+inc hl
+ld (hl), 0
+inc hl
+ld (hl), 0
+inc hl
+ld (hl), 0
+
  	LD 	HL, EXPR 
+
 	CALL	prs_expr
 	OR	A
 	JR	Z, .m_synerr
+
 
 	; If (pos) does not now point to the terminating zero, there was
 	;   an error. Print the result, or an error message 
@@ -686,7 +705,7 @@ m_divzero: db 'Division by zero',13,10,0
 
 m_prompt: db 'scalc> ',0
 
-m_banner: db 'scalc v0.1a Copyright (c)2022 Kevin Boone',13,10,0
+m_banner: db 'scalc v0.1b Copyright (c)2022 Kevin Boone',13,10,0
 
 ; rterr is set to zero if parse_expr() has already produced an error
 ;   message, so the caller should not.
